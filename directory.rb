@@ -25,13 +25,10 @@ def print_header
 end
 
 def print(students)
-  count = 0 
-  while true do 
-    puts "#{students[count][:name]}, Height:#{students[count][:height]}, Hobby:#{students[count][:hobby]}, (#{students[count][:cohort]} cohort)"
-    count += 1 
-    break if count == students.length
+  students.each_with_index do |student, index|
+    puts "#{student[:name].center(10)} Height:#{student[:height].center(10)} Hobby:#{student[:hobby].center(10)} (#{student[:cohort]} cohort)"
   end
-end 
+end
 
 def print_footer(names)
   puts "Overall, we have #{names.count} great students"
