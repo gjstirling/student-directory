@@ -8,7 +8,8 @@ def input_students
   while !name.empty? do 
     # add the student hash to the array
     puts "Which cohort are they joining ?"
-    cohort = gets.chomp
+    cohort = gets .delete_suffix!("\n")
+    puts cohort
     cohort = "None specified" if cohort == ""
     puts "Add their favourite hobby"
     hobby = gets.chomp
