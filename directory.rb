@@ -15,7 +15,8 @@ def input_students
     puts "enter their height"
     height = gets.chomp
     students << {name: name, cohort: cohort, hobby: hobby, height: height}
-    puts "Now we have #{students.count} students"
+    puts "Now we have #{students.count} student" if students.count == 1
+    puts "Now we have #{students.count} students" if students.count > 1
     # get another name from the user
     name = gets.chomp
   end 
@@ -23,21 +24,25 @@ students
 end
 
 def print_header 
-  puts "The students of Villains Academy"
-  puts "-------------"
+  puts "The students of Villains Academy".center(80)
+  puts "-------------".center(80)
 end
 
 def print(students)
+  puts "Which cohort would you like to print?"
+  cohort = gets.chomp
+  print_header
   students.each_with_index do |student, index|
-    puts "#{student[:name].center(10)} Height:#{student[:height].center(10)} Hobby:#{student[:hobby].center(10)} cohort:#{student[:cohort]}"
+    if student[:cohort] == cohort
+    puts "#{student[:name].center(20)} Height:#{student[:height].center(20)} Hobby:#{student[:hobby].center(20)}"
+    end
   end
 end
 
 def print_footer(names)
-  puts "Overall, we have #{names.count} great students"
+  puts "Overall, we have #{names.count} great students".center(80)
 end 
 
 students = input_students
-print_header
 print(students)
 print_footer(students)
