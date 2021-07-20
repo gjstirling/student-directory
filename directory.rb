@@ -12,7 +12,7 @@ def input_students
     # get another name from the user
     name = gets.chomp
   end 
-  students 
+students 
 end
 
 def print_header 
@@ -21,10 +21,11 @@ def print_header
 end
 
 def print(students)
-  students.each_with_index do |student, index|
-    if student[:name].length < 12
-      puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
-    end
+  count = 0 
+  while true do 
+    puts "#{students[count][:name]} (#{students[count][:cohort]} cohort)"
+    count += 1 
+    break if count == students.length
   end
 end 
 
