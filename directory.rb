@@ -30,6 +30,7 @@ def print_header
 end
 
 def print(students)
+  return if students.length == 0 
   puts "Which cohort would you like to print?"
   cohort = gets.chomp
   print_header
@@ -41,6 +42,7 @@ def print(students)
 end
 
 def print_footer(names)
+  puts "No students entered"; return if names.length == 0 
   puts "Overall, we have #{names.count} great students".center(80)
 end 
 
