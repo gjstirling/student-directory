@@ -7,29 +7,29 @@ def input_students
   name = gets.chomp
   #while the name is not empty, repeat this code
   while !name.empty? do
-  #add the student hash to the array
+    #add the student hash to the array
     students << {name: name, cohort: :novemeber}
-    puts "Now we have #{student.count} students"
+    puts "Now we have #{students.count} students"
     #get another name from the user
-    name = get.chomp
+    name = gets.chomp
   end
   #return the array of students
 students
 end
 
 def print_header
-  puts "The students of my cohort at Makers Academy'
-  puts ``-------------``
+  puts 'The students of my cohort at Makers Academy'
+  puts '-------------'
 end
 
 def print(students)
-  student.each do |student|
-    puts '#{student{:name}} #{student{:cohort}} cohort)'
+  students.each do |student|
+    puts "#{student[:name]} #{student[:cohort]} cohort"
   end
 end
 
 def print_footer(names)
-  puts 'Overall, we have #{names.count} great students'
+  puts "Overall, we have #{names.count} great students"
 end
 
 students = input_students
