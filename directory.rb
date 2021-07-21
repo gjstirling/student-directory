@@ -1,17 +1,30 @@
 def interactive_menu
   @students = []
+  try_load_students
   loop do 
     print_menu
      # 2. read the input and save it into a variable
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
     # 3. do what the user has asked
   end
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def try_load_students
+  filename = ARGV.first 
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry #{filename} doesn't exist."
+    exit
+  end 
+end
+
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
+    name, cohort = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
@@ -58,7 +71,7 @@ def print_menu
 end
 
 def show_students
-  print()
+  print
   print_footer()
 end 
 
@@ -66,12 +79,12 @@ def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
   # get the first name
-  name = gets.chomp
+  name = STDIN.gets.chomp
   # while the name is not empty, repeat this code
   while !name.empty? do 
     # add the student hash to the array
     puts "Which cohort are they joining ?"
-    cohort = gets .delete_suffix!("\n")
+    cohort = STDIN.gets.delete_suffix!("\n")
     @students << {name: name, cohort: cohort}
     puts "Now we have #{@students.count} student" if @students.count == 1
     puts "Now we have #{@students.count} students" if @students.count > 1
@@ -89,7 +102,7 @@ end
 def print
   return if @students.length == 0 
   puts "Which cohort would you like to print?"
-  cohort = gets.chomp
+  cohort = STDIN.gets.chomp
   print_header
   @students.each_with_index do |student, index|
     if student[:cohort] == cohort.to_sym
