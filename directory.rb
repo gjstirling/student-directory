@@ -12,16 +12,21 @@ end
 def process(selection)
   case selection 
   when "1"
-   input_students
+    puts "Entered add new students mode" 
+    input_students
   when "2"
-   show_students
+    puts "Showing listed students"  
+    show_students
     # show the students
   when "3" 
-   save_students
+    puts "Saving new students"  
+    save_students
   when "4"
-   load_students
+    puts "Loading students from file"
+    load_students 
   when "9"
-   exit # this will cause the program to terminate
+    puts "Program terminated"
+    exit # this will cause the program to terminate
   else
    puts "I don't know what you meant, try again"
   end
