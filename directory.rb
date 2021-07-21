@@ -8,17 +8,32 @@ def interactive_menu
   end
 end
 
+def save_students 
+   # open the file for writing
+   file = File.open("students.csv", "w")
+   # iterate over the array of students
+   @students.each do |student|
+    # these two lines convert the hash data into a string to write to the file
+     student_data = [student[:name], student[:cohort]]
+     csv_line = student_data.join(",")
+     file.puts csv_line
+   end
+   file.close
+ end
+
 def process(selection)
    case selection 
    when "1"
-     input_students
+    input_students
    when "2"
-     show_students
+    show_students
      # show the students
+   when "3" 
+    save_students
    when "9"
-     exit # this will cause the program to terminate
+    exit # this will cause the program to terminate
    else
-     puts "I don't know what you meant, try again"
+    puts "I don't know what you meant, try again"
    end
 end
 
@@ -26,6 +41,7 @@ def print_menu
   # 1. print the menu and ask the user what to complete
   puts "1. Input the students"
   puts "2. Show the students"
+  puts "3. Save the list of students.csv"
   puts "9. Exit"
 end
 
@@ -33,8 +49,6 @@ def show_students
   print()
   print_footer()
 end 
-
-
 
 def input_students 
   puts "Please enter the names of the students"
@@ -46,12 +60,7 @@ def input_students
     # add the student hash to the array
     puts "Which cohort are they joining ?"
     cohort = gets .delete_suffix!("\n")
-    cohort = "None specified" if cohort == ""
-    puts "Add their favourite hobby"
-    hobby = gets.chomp
-    puts "enter their height"
-    height = gets.chomp
-    @students << {name: name, cohort: cohort, hobby: hobby, height: height}
+    @students << {name: name, cohort: cohort}
     puts "Now we have #{@students.count} student" if @students.count == 1
     puts "Now we have #{@students.count} students" if @students.count > 1
     # get another name from the user
@@ -72,7 +81,7 @@ def print
   print_header
   @students.each_with_index do |student, index|
     if student[:cohort] == cohort
-    puts "#{student[:name].center(20)} Height:#{student[:height].center(20)} Hobby:#{student[:hobby].center(20)}"
+    puts "#{student[:name].center(20)}"
     end
   end
 end
