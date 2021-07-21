@@ -27,17 +27,19 @@ def process(selection)
   end
 end
 
-def try_load_students
+ def try_load_students
   filename = ARGV.first 
-  return if filename.nil?
-  if File.exists?(filename)
-    load_students(filename)
-    puts "loaded #{@students.count} from #{filename}"
-  else
-    puts "Sorry #{filename} doesn't exist."
-    exit
-  end 
-end
+    if filename.nil?
+      puts "Default file loaded"
+      load_students()
+    elsif File.exists?(filename)
+     load_students(filename)
+     puts "loaded #{@students.count} from #{filename}"
+    else
+     puts "Sorry #{filename} doesn't exist."
+     exit
+    end 
+ end
 
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
