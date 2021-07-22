@@ -9,7 +9,46 @@ def interactive_menu
   end
 end
 
-def process(selection)
+def try_load_students
+  @filename = ARGV.first 
+    if @filename.nil?
+      puts "No file loaded"
+    elsif File.exists?(@filename)
+     load_students(@filename)
+     puts "loaded #{@students.count} from #{@filename}"
+    else
+     puts "Sorry #{@filename} doesn't exist."
+     exit
+    end 
+ end
+
+def load_students()
+  puts "Enter which file you'd like to load"
+  @filename = gets.chomp
+  file = File.open(@filename, "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(',')
+    data(name, cohort)
+  end
+  file.close
+end
+
+def save_students 
+   # open the file for writing
+  puts "Save students to which file ?"
+  @filename = gets.chomp 
+  file = File.open(@filename, "w")
+   # iterate over the array of students
+  @students.each do |student|
+    # these two lines convert the hash data into a string to write to the file
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
+ end
+ 
+ def process(selection)
   case selection 
   when "1"
     puts "Entered add new students mode" 
@@ -32,27 +71,13 @@ def process(selection)
   end
 end
 
- def try_load_students
-  filename = ARGV.first 
-    if filename.nil?
-      puts "Default file loaded"
-      load_students()
-    elsif File.exists?(filename)
-     load_students(filename)
-     puts "loaded #{@students.count} from #{filename}"
-    else
-     puts "Sorry #{filename} doesn't exist."
-     exit
-    end 
- end
-
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    data(name, cohort)
-  end
-  file.close
+def print_menu
+  # 1. print the menu and ask the user what to complete
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Save the list of students to a file"
+  puts "4. Load the list of students from a file"
+  puts "9. Exit"
 end
 
 def input_students 
@@ -76,28 +101,6 @@ end
 
 def data(name, cohort)
   @students << {name: name, cohort: cohort.to_sym}
-end
-
-def save_students 
-   # open the file for writing
-   file = File.open("students.csv", "w")
-   # iterate over the array of students
-   @students.each do |student|
-    # these two lines convert the hash data into a string to write to the file
-     student_data = [student[:name], student[:cohort]]
-     csv_line = student_data.join(",")
-     file.puts csv_line
-   end
-   file.close
- end
-
-def print_menu
-  # 1. print the menu and ask the user what to complete
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list of students.csv"
-  puts "4. Load the list of students.csv"
-  puts "9. Exit"
 end
 
 def show_students
