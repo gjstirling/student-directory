@@ -1,6 +1,5 @@
 def interactive_menu
   @students = []
-  try_load_students
   loop do 
     print_menu
      # 2. read the input and save it into a variable
@@ -9,44 +8,28 @@ def interactive_menu
   end
 end
 
-def try_load_students
-  @filename = ARGV.first 
-    if @filename.nil?
-      puts "No file loaded"
-    elsif File.exists?(@filename)
-     load_students(@filename)
-     puts "loaded #{@students.count} from #{@filename}"
-    else
-     puts "Sorry #{@filename} doesn't exist."
-     exit
-    end 
- end
-
 def load_students()
   puts "Enter which file you'd like to load"
   @filename = gets.chomp
-  file = File.open(@filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    data(name, cohort)
-  end
-  file.close
+  File.open(@filename, "r"){|file| file.readlines.each{|line| (name, cohort) = line.chomp.split(','); data(name, cohort)}}
 end
 
 def save_students 
    # open the file for writing
   puts "Save students to which file ?"
-  @filename = gets.chomp 
-  file = File.open(@filename, "w")
-   # iterate over the array of students
-  @students.each do |student|
-    # these two lines convert the hash data into a string to write to the file
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
-  file.close
- end
+  @filename = gets.chomp
+  File.open(@filename, "w"){|file| @students.each {|student| file.puts [student[:name], student[:cohort]].join(",")}}
+end
+  # file = File.open(@filename, "w")
+  #  # iterate over the array of students
+  # @students.each do |student|
+  #   # these two lines convert the hash data into a string to write to the file
+  #   student_data = [student[:name], student[:cohort]]
+  #   csv_line = student_data.join(",")
+  #   file.puts csv_line
+  # end
+  # file.close
+#end
  
  def process(selection)
   case selection 
@@ -91,8 +74,7 @@ def input_students
     puts "Which cohort are they joining ?"
     cohort = STDIN.gets.delete_suffix!("\n")
     data(name, cohort)
-    puts "Now we have #{@students.count} student" if @students.count == 1
-    puts "Now we have #{@students.count} students" if @students.count > 1
+    puts "Now we have #{@students.count} student#{"s" if @students.size !=1}"   
     # get another name from the user
     name = STDIN.gets.chomp
   end 
@@ -100,7 +82,7 @@ def input_students
 end
 
 def data(name, cohort)
-  @students << {name: name, cohort: cohort.to_sym}
+  @students << {name: name, cohort: cohort}
 end
 
 def show_students
@@ -115,13 +97,9 @@ end
 
 def print
   return if @students.length == 0 
-  puts "Which cohort would you like to print?"
-  cohort = STDIN.gets.chomp
   print_header
   @students.each_with_index do |student, index|
-    if student[:cohort] == cohort.to_sym
-    puts "#{student[:name].center(20)}"
-    end
+    puts "#{student[:name].center(20)} #{student[:cohort].center(20)}"
   end
 end
 
